@@ -3,7 +3,7 @@ import { getConnection } from "../database/database.js";
 const getLanguages = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT id, nombre, apellido, email, password FROM usuarios");
+        const result = await connection.query("SELECT id, name, email, password FROM users");
         res.json(result);
     } catch (error) {
         res.status(500);
@@ -16,7 +16,7 @@ const getLanguage = async (req, res) => {
         console.log(req.params);
         const {id} = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT id, nombre, apellido, email, password FROM usuarios WHERE id = ?", id);
+        const result = await connection.query("SELECT id, name, email, password FROM users WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         res.status(500);
@@ -26,15 +26,31 @@ const getLanguage = async (req, res) => {
 
 const addLanguage = async (req, res) => {
     try {
-        const { nombre, apellido, email, password } = req.body;
+        const { name, email, password } = req.body;
 
-        if (nombre === undefined || apellido === undefined || email === undefined || password === undefined) {
+        if (name === undefined || email === undefined || password === undefined) {
             res.status(400).json({ message: "Bad Request. Please fill all fields."})
+            return;
         }
         
-        const language = {nombre, apellido, email, password};
+        const timestamp = new Date().toISOString();
+
+        const language = {
+            name, 
+            email, 
+            email_verified_at:null,
+            password, 
+            two_factor_secret:null,
+            two_factor_recovery_codes:null,
+            two_factor_confirmed_at:null,
+            remember_token:null,
+            current_team_id:null,
+            profile_photo_path:null,
+            created_at: '2023-11-19 10:21:20',
+            updated_at: '2023-11-19 10:31:20'
+        };
         const connection = await getConnection();
-        await connection.query("INSERT INTO usuarios SET ?", language);
+        await connection.query("INSERT INTO users SET ?", language);
         res.json({message: "Language added"});
     } catch (error) {
         res.status(500);
