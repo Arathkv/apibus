@@ -1,6 +1,6 @@
 import { getConnection } from "../database/database.js";
 
-const getLanguages = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
         const connection = await getConnection();
         const result = await connection.query("SELECT id, name, email, password FROM users");
@@ -11,7 +11,7 @@ const getLanguages = async (req, res) => {
     }
 };
 
-const getLanguage = async (req, res) => {
+const getUser = async (req, res) => {
     try {
         console.log(req.params);
         const {id} = req.params;
@@ -24,7 +24,8 @@ const getLanguage = async (req, res) => {
     }
 };
 
-const addLanguage = async (req, res) => {
+
+const addUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -33,9 +34,17 @@ const addLanguage = async (req, res) => {
             return;
         }
         
-        const timestamp = new Date().toISOString();
+        const fechaActual = new Date();
+        const anio = fechaActual.getFullYear();
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+        const dia = String(fechaActual.getDate()).padStart(2, '0');
+        const hora = String(fechaActual.getHours()).padStart(2, '0');
+        const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+        const segundos = String(fechaActual.getSeconds()).padStart(2, '0');
 
-        const language = {
+        const timestamp = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
+
+        const usuario = {
             name, 
             email, 
             email_verified_at:null,
@@ -46,19 +55,21 @@ const addLanguage = async (req, res) => {
             remember_token:null,
             current_team_id:null,
             profile_photo_path:null,
-            created_at: '2023-11-19 10:21:20',
-            updated_at: '2023-11-19 10:31:20'
+            created_at: timestamp,
+            updated_at: timestamp
         };
+
         const connection = await getConnection();
-        await connection.query("INSERT INTO users SET ?", language);
-        res.json({message: "Language added"});
+        await connection.query("INSERT INTO users SET ?", usuario);
+        res.json({message: "Usuario agregado"});
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
 };
 
-const updateLanguage = async (req, res) => {
+
+const updateUser = async (req, res) => {
     try {
         const {id} = req.params;
         const { nombre, apellido, email, password } = req.body;
@@ -78,7 +89,7 @@ const updateLanguage = async (req, res) => {
 };
 
 
-const deleteLanguage = async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         const {id} = req.params;
         const connection = await getConnection();
@@ -91,9 +102,9 @@ const deleteLanguage = async (req, res) => {
 };
 
 export const methods = {
-    getLanguages, 
-    addLanguage,
-    getLanguage,
-    updateLanguage,
-    deleteLanguage
+    getUsers, 
+    addUser,
+    getUser,
+    updateUser,
+    deleteUser
 };
