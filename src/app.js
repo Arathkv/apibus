@@ -5,6 +5,7 @@ import morgan from "morgan";
 import userRoutes from "./routes/user.routes";
 import rutaRoutes from "./routes/ruta.routes";
 import reservaRoutes from "./routes/reserva.routes";
+import autobusRoutes from "./routes/autobus.routes";
 
 const cors = require("cors");
 
@@ -24,5 +25,6 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/rutas", rutaRoutes);
 app.use("/api/reservas", reservaRoutes);
+app.use("/api/autobuses", autobusRoutes);
 
 export default app;
