@@ -29,9 +29,9 @@ const getReserva = async (req, res) => {
 
 const addReserva = async (req, res) => {
     try {
-        const { cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, nopersonas  } = req.body;
+        const { cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, nopersonas, autobus_id  } = req.body;
 
-        if (cliente_id === undefined || ruta_id === undefined || fecha_inicio === undefined  || fecha_fin === undefined || costo_total === undefined || nopersonas === undefined) {
+        if (cliente_id === undefined || ruta_id === undefined || fecha_inicio === undefined  || fecha_fin === undefined || costo_total === undefined || nopersonas === undefined || autobus_id === undefined) {
             res.status(400).json({ message: "Bad Request. Please fill all fields."})
             return;
         }
@@ -58,7 +58,7 @@ const addReserva = async (req, res) => {
             created_at: timestamp,
             updated_at: timestamp,
             nopersonas,
-            autobus_id:null,
+            autobus_id,
             ruta_libre:null
         };
         
