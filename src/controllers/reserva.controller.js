@@ -3,7 +3,7 @@ import { getConnection } from "./../database/database.js";
 const getReservas = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT id, cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, nopersonas, autobus_id FROM reservas");
+        const result = await connection.query("SELECT id, cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, status, nopersonas, autobus_id FROM reservas");
         res.json(result);
     } catch (error) {
         res.status(500);
@@ -16,7 +16,7 @@ const getReserva = async (req, res) => {
         console.log(req.params);
         const {id} = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT id, cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, nopersonas, autobus_id FROM reservas WHERE id = ?", id);
+        const result = await connection.query("SELECT id, cliente_id, ruta_id, fecha_inicio, fecha_fin, costo_total, status, nopersonas, autobus_id FROM reservas WHERE id = ?", id);
         res.json(result);
     } catch (error) {
         res.status(500);
@@ -54,7 +54,7 @@ const addReserva = async (req, res) => {
             fecha_inicio,
             fecha_fin,
             costo_total, 
-            status:'Reservado',
+            status:'RESERVADO',
             created_at: timestamp,
             updated_at: timestamp,
             nopersonas,
